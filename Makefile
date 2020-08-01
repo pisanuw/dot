@@ -17,7 +17,7 @@ help:
 
 ############################################################
 
-DATE=`date`
+DATE=`date +"%Y-%M-%d"`
 
 install:
 	rsync --checksum uw/dot-bashrc ~/.bashrc
