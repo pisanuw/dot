@@ -1,0 +1,7 @@
+
+# .bash_profile is executed for login shells, 
+# .bashrc is executed for interactive non-login shells (emacs, xterm, etc)
+
+if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+fi

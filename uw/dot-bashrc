@@ -1,0 +1,86 @@
+
+# .bash_profile is executed for login shells, 
+# .bashrc is executed for interactive non-login shells (emacs, xterm, etc)
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+
+# set prompt
+# PS1='\w\$ '
+PS1='\h:\W\$ '
+
+# alias homer='ssh pisan@homer.u.washington.edu'
+# alias uw1lab='ssh pisan@uw1-320-lab.uwb.edu'
+
+# NETID for CSS machines
+NETID="pisan"
+
+uptimecmd=""
+
+# To log into another CSS machine
+# $ uwbR1
+# $ uwbR8
+
+for i in {12..1}
+do
+    cmd="uwbR$i='ssh $NETID@csslab$i.uwb.edu'"
+    eval "alias $cmd"
+    uptimecmd="ssh $NETID@csslab$i.uwb.edu 'uname -n; uptime'; $uptimecmd"
+done
+
+# To get the uptime and the number of users on each CSS machine
+# $ uwbRuptime
+eval "alias uwbRuptime=\"$uptimecmd\""
+
+pathadd() {
+    if [ -d "$1" ]; then
+        if  [[ ":$PATH:" != *":$1:"* ]]; then
+            export PATH="${PATH:+"$PATH:"}$1"
+        fi
+    fi
+}
+
+pmore () {
+    lexer=`pygmentize -N "$1"`
+    if [ $lexer == "text" ]; then
+        lexer="emacs"
+    fi
+    echo $lexer
+    cmd="    pygmentize -l $lexer -f terminal "$1" | more -R "
+    pygmentize -l $lexer -f terminal "$1" | more -R
+    echo $cmd
+}
+
+
+pathadd /usr/local/bin
+pathadd /usr/local/opt/llvm/bin
+pathadd /CSSDIV/classes/cssjolly
+pathadd $HOME/.cargo/bin
+pathadd $HOME/local/bin
+pathadd $HOME/.local/bin
+
+
+alias get='git pull'
+alias put='git commit -am saving; git push; git status'
+
+# Mac 10.13 $ /bin/bash --version gived "GNU bash, version 3.2.57(1)"
+# command_not_found_handle only available in bash 4.x
+command_not_found_handle ()
+{
+    echo "$@: not found, try \"apropos $@\" or maybe it was a typo?"
+    return 1
+}
+
+# enable clang++
+# sets LD_LIBRARY_PATH PERL5LIB PCP_DIR X_SCLS PYTHONPATH PKG_CONFIG_PATH INFOPATH
+# adds /opt/rh/devtoolset-8/root/usr/bin: to PATH
+# If source does not work or is not an option use:
+# exec scl enable llvm-toolset-7.0 bash
+if [ hash "scl_source" 2>/dev/null ]; then
+    source scl_source enable llvm-toolset-7.0
+fi
+
+

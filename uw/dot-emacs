@@ -1,0 +1,165 @@
+
+;; really no .emacs file
+
+;; from Tim Menzies dotemacs file at https://github.com/timm/dot/blob/master/ncsu/vcl/dotemacs
+(progn
+  (global-font-lock-mode t)
+  ;(global-hl-line-mode 0)
+  (load-theme  'wombat)
+  (setq column-number-mode t)
+  (setq inhibit-startup-message t)
+  (setq make-backup-files nil) 
+  (setq scroll-step 1)
+  ;(setq-default fill-column 52)
+  (setq-default indent-tabs-mode nil)
+  (show-paren-mode t)
+  (xterm-mouse-mode t)
+)
+
+;; C-x C-+ larger font
+;; (set-default-font "Monaco 14")
+
+(fset 'swap-with-XXX
+   "\C-a\C-y\C-k\C-rXXX\C-a\C-y\C-k\C-x\C-s")
+
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+; (package-initialize)
+
+(setq package-archives
+      '(
+;;;("melpa" . "http://melpa.milkbox.net/packages/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
+        ("marmalade" . "http://marmalade-repo.org/packages/")
+        ("melpa" . "http://stable.melpa.org/packages/")))
+
+(autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
+(setq auto-mode-alist
+      (append '(("\\.cs$" . csharp-mode)) auto-mode-alist))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(autoload 'markdown-mode "markdown-mode"
+  "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.Rmd\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+(autoload 'gfm-mode "markdown-mode"
+   "Major mode for editing GitHub Flavored Markdown files" t)
+(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq load-path
+      (append '("/Users/yusuf/Documents/lisp/") load-path))
+
+;; no spaces please
+(setq-default indent-tabs-mode nil)
+(setq default-tab-width 4)
+
+(if (string-equal "darwin" (symbol-name system-type))
+    (progn 
+      (setenv "PATH" (concat (getenv "PATH")
+ ":/usr/local/bin:/Users/yusuf/bin:/usr/local/ec2/ec2-api-tools-1.7.5.1/bin:/Library/TeX/texbin:"))
+      (setenv "JAVA_HOME" "/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home")
+      (setenv "EC2_HOME" "/usr/local/ec2/ec2-api-tools-1.7.5.1")
+      (setenv "AWS_ACCESS_KEY" "AKIAIFN45UHA4QWAAF2A")
+      (setenv "AWS_SECRET_KEY" "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")))
+
+
+;(require 'ido)
+;(ido-mode t)
+(if (and nil (not (version<= emacs-version "23")))
+    (progn
+      (require 'auto-complete)
+      (ac-config-default)
+      (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+      (require 'auto-complete-config)
+      (ac-config-default)
+      (global-auto-complete-mode t)
+      ))
+; use IPython
+;(setq-default py-shell-name "/usr/local/bin/ipython")
+;(setq-default py-which-bufname "IPython")
+; use the wx backend, for both mayavi and matplotlib
+;(setq py-python-command-args '("--gui=wx" "--pylab=wx" "-colors" "Linux"))
+;(setq py-force-py-shell-name-p t)
+
+; switch to the interpreter after executing code
+;(setq py-shell-switch-buffers-on-execute-p t)
+;(setq py-switch-buffers-on-execute-p t)
+; don't split windows
+;(setq py-split-windows-on-execute-p nil)
+; try to automagically figure out indentation
+;(setq py-smart-indentation t)
+
+(fset 'make-gpx-entry
+   [?< ?w ?p ?t ?t ?  ?l ?n backspace ?o ?n ?= ?\" ?\C-  ?\C-s ?  ?\C-f ?\C-b ?\C-w ?\C-e ?\" ?\C-d ?  ?l ?a ?t ?= ?\" ?\C-  ?\C-s ?  ?\C-f ?\C-b ?\C-w ?\C-e ?\" ?> return ?< ?t ?i ?m ?e ?> ?2 ?0 ?1 ?6 ?- ?0 ?9 ?- ?2 ?3 ?T ?1 ?0 ?: ?0 ?0 ?: ?0 ?0 ?Z ?< ?/ ?t ?i ?m ?e ?> ?\C-p ?\C-a ?\C-f ?\C-f ?\C-f ?\C-d ?\C-n ?\C-e return ?< ?n ?a ?m ?e ?> ?t ?0 ?0 ?0 ?< ?/ ?n ?a ?m ?e ?> return ?< ?/ ?w ?p ?t ?> ?\C-n ?\C-a])
+
+(fset 'make-gpx-entry-google
+   [tab ?< ?w ?p ?t ?  ?l ?a ?t ?= ?\" ?\C-s ?, ?\C-b ?\" ?\C-d ?  ?\C-f ?l ?o ?n ?= ?\" ?\C-e ?\" ?> return tab ?< ?t ?i ?m ?e ?> ?2 ?0 ?1 ?6 ?- ?0 ?9 ?- ?2 ?3 ?T ?1 ?0 ?: ?0 ?0 ?: ?0 ?0 ?Z ?< ?/ ?t ?i ?m ?e ?> return backspace backspace backspace backspace backspace backspace ?  ?< ?/ ?w ?p ?t ?> ?\C-n ?\C-a])
+
+(defun my-c-mode-common-hook ()
+  (c-set-style "ellemtel")
+  )
+
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+
+(defun crun() ; execute-c-program ()
+  (interactive)
+  (defvar foo)
+  (setq foo (concat "gcc -Wall " (buffer-name) " && ./a.out" ))
+  (shell-command foo))
+
+;(global-set-key [C-f1] 'execute-c-program)
+
+; (byte-recompile-directory (expand-file-name "/Users/yusuf/Documents/lisp/") 0)
+
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+(put 'downcase-region 'disabled nil)
+
+(fset 'savitch-word-no-tabs
+   [escape ?< escape ?x ?r ?e ?p ?l ?a ?c ?e ?- ?s ?t ?r tab return tab return ?  return escape ?<])
+(fset 'savitch-word-single-line
+   [?\C-e ?\C-d ?\C-q tab ?\C-e ?\C-d ?\C-q tab ?\C-e ?\C-d ?\C-q tab ?\C-e ?\C-d ?\C-q tab ?\C-e ?\C-d ?\C-q tab ?\C-e ?\C-n ?\C-a])
+(fset 'savitch-word-single-line-tf
+   [?\C-e ?\C-q tab ?T ?r ?u ?e ?\C-q tab ?F ?a ?l ?s ?e ?\C-d ?\C-q tab ?\C-n ?\C-a])
+(fset 'savitch-word-single-line-delete-qnum
+   [?\C-  ?\C-s ?\) ?  ?\C-f ?\C-b ?\C-w ?\C-e ?\C-n ?\C-a])
+
+(defun homer ()
+  (interactive)
+  (find-file "/scp:pisan@homer.u.washington.edu:")
+  )
+
+(defun ovid ()
+  (interactive)
+  (find-file "/scp:pisan@ovid.u.washington.edu:")
+  )
+
+(defun c11 ()
+  (interactive)
+  (find-file "/ssh:pisan@csslab11.uwb.edu:"))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(latex-run-command "pdflatex")
+ '(package-selected-packages
+   (quote
+    (rust-playground rust-mode markdown-mode+ markdown-mode python-mode auto-complete cider))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
