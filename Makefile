@@ -18,16 +18,16 @@ help:
 ############################################################
 
 install:
-	cp uw/dot-bashrc ~/.bashrc
-	cp uw/dot-bash_profile ~/.bash_profile
-	cp uw/dot-emacs ~/.emacs
-	cp uw/dot-gitignore ~/.gitignore
+	rsync --checksum uw/dot-bashrc ~/.bashrc
+	rsync --checksum uw/dot-bash_profile ~/.bash_profile
+	rsync --checksum uw/dot-emacs ~/.emacs
+	rsync --checksum uw/dot-gitignore ~/.gitignore
 
 update:
-	cp ~/.bashrc uw/dot-bashrc 
-	cp ~/.bash_profile uw/dot-bash_profile 
-	cp ~/.emacs uw/dot-emacs 
-	cp ~/.gitignore uw/dot-gitignore
+	rsync --checksum ~/.bashrc uw/dot-bashrc 
+	rsync --checksum ~/.bash_profile uw/dot-bash_profile 
+	rsync --checksum ~/.emacs uw/dot-emacs 
+	rsync --checksum ~/.gitignore uw/dot-gitignore
 	git commit -am saving
 	git push
 	git status
