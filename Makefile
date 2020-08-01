@@ -17,9 +17,10 @@ help:
 
 ############################################################
 
-DATE=`date +"%Y-%m-%d"`
+DATE=`date o+"%Y-%m-%d"`
 
 install:
+	git pull
 	rsync --checksum uw/dot-bashrc ~/.bashrc
 	rsync --checksum uw/dot-bash_profile ~/.bash_profile
 	rsync --checksum uw/dot-emacs ~/.emacs

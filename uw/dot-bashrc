@@ -1,4 +1,13 @@
 
+# Dot files are managed via https://github.com/pisanuw/dot
+# To get the latest files
+#
+# $ git clone https://github.com/pisanuw/dot
+# $ make install
+#
+# If you make changes, update the repo using
+# $ make update
+
 # .bash_profile is executed for login shells, 
 # .bashrc is executed for interactive non-login shells (emacs, xterm, etc)
 
