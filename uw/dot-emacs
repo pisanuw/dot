@@ -65,9 +65,12 @@
       (setenv "PATH" (concat (getenv "PATH")
  ":/usr/local/bin:/Users/yusuf/bin:/usr/local/ec2/ec2-api-tools-1.7.5.1/bin:/Library/TeX/texbin:"))
       (setenv "JAVA_HOME" "/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home")
-      (setenv "EC2_HOME" "/usr/local/ec2/ec2-api-tools-1.7.5.1")
-      (setenv "AWS_ACCESS_KEY" "AKIAIFN45UHA4QWAAF2A")
-      (setenv "AWS_SECRET_KEY" "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")))
+      (setenv "EC2_HOME" "/usr/local/ec2/ec2-api-tools-1.7.5.1")))
+
+;; Since the DOT files are in a public repo
+;; DO NOT put any private information in DOT files
+; (setenv "AWS_ACCESS_KEY" "...")
+; (setenv "AWS_SECRET_KEY" "...")
 
 
 ;(require 'ido)
