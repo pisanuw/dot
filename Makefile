@@ -17,6 +17,8 @@ help:
 
 ############################################################
 
+DATE=`date`
+
 install:
 	rsync --checksum uw/dot-bashrc ~/.bashrc
 	rsync --checksum uw/dot-bash_profile ~/.bash_profile
@@ -28,7 +30,7 @@ update:
 	rsync --checksum ~/.bash_profile uw/dot-bash_profile 
 	rsync --checksum ~/.emacs uw/dot-emacs 
 	rsync --checksum ~/.gitignore uw/dot-gitignore
-	git commit -am saving
+	git commit -am "saving $DATE"
 	git push
 	git status
 
