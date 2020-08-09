@@ -10,6 +10,7 @@
                                       (file-name-as-directory "pisanuw")
                                       (file-name-as-directory "dot")
                                       "Makefile"))))
+    (message (concat "make -f " m " update"))
     (shell-command (concat "make -f " m " update"))))
  
 ;; (defconst my/init (eval-when-compile (expand-file-name "init.el" user-emacs-directory)))
