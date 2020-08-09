@@ -38,7 +38,6 @@ update:
 	cd $(MF_DIR) &&	git status
 
 
-
 define HELP
 About DOT
 =========
@@ -55,5 +54,4 @@ Note: this could take a few minutes.
 
 endef
 export HELP
-
 
