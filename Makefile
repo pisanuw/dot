@@ -22,6 +22,7 @@ DATE=`date +"%Y-%m-%d"`
 MF_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 install:
+	cd $(MF_DIR) && git config pull.ff only
 	cd $(MF_DIR) &&	git pull
 	cd $(MF_DIR) &&	rsync --checksum uw/dot-bashrc ~/.bashrc
 	cd $(MF_DIR) && rsync --checksum uw/dot-bash_profile ~/.bash_profile
