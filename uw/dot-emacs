@@ -16,7 +16,7 @@
 ;; (defconst my/init (eval-when-compile (expand-file-name "init.el" user-emacs-directory)))
 ;; (defconst my/config (eval-when-compile (expand-file-name "config.org" user-emacs-directory)))
 ;; (defconst my/custom (eval-when-compile (expand-file-name "custom.el" user-emacs-directory)))
-;; (defconst my/backups (eval-when-compile (expand-file-name "backups" user-emacs-directory)))
+(defconst my/backups (eval-when-compile (expand-file-name "backups" user-emacs-directory)))
 ;; (defconst my/agenda (eval-when-compile (expand-file-name "agenda" user-emacs-directory)))
 ;; (defconst my/java-format-settings-file (eval-when-compile (expand-file-name "spring-eclipse-code-conventions.xml")))
 
@@ -49,11 +49,18 @@
 ;; Also, store auto-saves in the same backup directory:
 (setq auto-save-file-name-transforms `((".*" ,(file-name-as-directory my/backups) t)))
 
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+        ("marmalade" . "http://marmalade-repo.org/packages/")
+        ("melpa" . "http://stable.melpa.org/packages/")))
+
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
 ;; install if necessary
 (require 'package)
 (package-initialize)
 
-(defun install-require (pcks)
+(defun package-install-require (pcks)
   (interactive "p")
   (dolist (pck pcks)
     (unless (package-installed-p pck)
@@ -61,8 +68,9 @@
   (dolist (pck pcks)
     (require pck)))
 
+;; Might need to run M-x package-refresh-contents
 (progn
-  (install-require '(smartparens))
+  (package-install-require '(smartparens))
   (smartparens-global-mode t))
 
 ;;; GUI
@@ -91,7 +99,7 @@
 
 ;; Initialize environment from the user’s shell.
 (progn
-  (install-require '(exec-path-from-shell))
+  (package-install-require '(exec-path-from-shell))
   (exec-path-from-shell-initialize))
 
 ;; for Mac, change font using +/i 
@@ -106,28 +114,28 @@
 
 ;; helps you learn keys, pop-up options when you wait after C-x
 (progn
-  (install-require '(which-key))
+  (package-install-require '(which-key))
   (which-key-mode t)
   (which-key-setup-side-window-right-bottom))
 
 (progn
-  (install-require '(hydra ivy))
+  (package-install-require '(hydra ivy))
   (ivy-mode 1))
 
 ;; mark lines, use C-c m c to act on all lines
 (progn
-  (install-require '(multiple-cursors))
+  (package-install-require '(multiple-cursors))
   (global-set-key (kbd "C-c m c") 'mc/edit-lines))
 
 ;; Git wrapper - might be interesting
 ;; (progn
-;;   (install-require '(magit))
+;;   (package-install-require '(magit))
 ;;   (global-set-key (kbd "C-x g") 'magit-status))
 
 
 ;; this requires more investigation
 (progn
-  (install-require '(lsp-mode))
+  (package-install-require '(lsp-mode))
   (global-set-key (kbd "C-c m c") 'mc/edit-lines))
 
 (defconst my/clang (executable-find "clang"))
@@ -157,19 +165,6 @@
 (fset 'swap-with-XXX
    "\C-a\C-y\C-k\C-rXXX\C-a\C-y\C-k\C-x\C-s")
 
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-; (package-initialize)
-
-(setq package-archives
-      '(
-;;;("melpa" . "http://melpa.milkbox.net/packages/")
-        ("gnu" . "http://elpa.gnu.org/packages/")
-        ("marmalade" . "http://marmalade-repo.org/packages/")
-        ("melpa" . "http://stable.melpa.org/packages/")))
 
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
 (setq auto-mode-alist
@@ -259,3 +254,17 @@
     (message "Connecting to %s" sshcmd)
     (find-file sshcmd)))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (lsp-mode which-key smartparens php-mode multiple-cursors markdown-mode ivy hydra highlight2clipboard exec-path-from-shell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
