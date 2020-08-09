@@ -1,14 +1,23 @@
 
 ;; https://gitlab.com/shilling.jake/emacsd/-/blob/master/config.org
-(defconst my/init (eval-when-compile (expand-file-name "init.el" user-emacs-directory)))
-(defconst my/config (eval-when-compile (expand-file-name "config.org" user-emacs-directory)))
-(defconst my/custom (eval-when-compile (expand-file-name "custom.el" user-emacs-directory)))
-(defconst my/backups (eval-when-compile (expand-file-name "backups" user-emacs-directory)))
-;; (defconst my/agenda (eval-when-compile (expand-file-name "agenda" user-emacs-directory)))
-;; (defconst my/java-format-settings-file (eval-when-compile (expand-file-name "spring-eclipse-code-conventions.xml")))
-
 (setq user-full-name "Yusuf Pisan"
       user-mail-address "pisan@uw.edu")
+
+(defun emacs-updated-push-to-github ()
+  (interactive)
+  (let ((m  (expand-file-name (concat (file-name-as-directory default-directory)
+                                      (file-name-as-directory "bitbucket")
+                                      (file-name-as-directory "pisanuw")
+                                      (file-name-as-directory "dot")
+                                      "Makefile"))))
+    (shell-command (concat "make -f " m " update"))))
+ 
+;; (defconst my/init (eval-when-compile (expand-file-name "init.el" user-emacs-directory)))
+;; (defconst my/config (eval-when-compile (expand-file-name "config.org" user-emacs-directory)))
+;; (defconst my/custom (eval-when-compile (expand-file-name "custom.el" user-emacs-directory)))
+;; (defconst my/backups (eval-when-compile (expand-file-name "backups" user-emacs-directory)))
+;; (defconst my/agenda (eval-when-compile (expand-file-name "agenda" user-emacs-directory)))
+;; (defconst my/java-format-settings-file (eval-when-compile (expand-file-name "spring-eclipse-code-conventions.xml")))
 
 
 ;;; Encodings

@@ -19,21 +19,23 @@ help:
 
 DATE=`date +"%Y-%m-%d"`
 
+MF_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+
 install:
-	git pull
-	rsync --checksum uw/dot-bashrc ~/.bashrc
-	rsync --checksum uw/dot-bash_profile ~/.bash_profile
-	rsync --checksum uw/dot-emacs ~/.emacs
-	rsync --checksum uw/dot-gitignore ~/.gitignore
+	cd $(MF_DIR) &&	git pull
+	cd $(MF_DIR) &&	rsync --checksum uw/dot-bashrc ~/.bashrc
+	cd $(MF_DIR) && rsync --checksum uw/dot-bash_profile ~/.bash_profile
+	cd $(MF_DIR) &&	rsync --checksum uw/dot-emacs ~/.emacs
+	cd $(MF_DIR) &&	rsync --checksum uw/dot-gitignore ~/.gitignore
 
 update:
-	rsync --checksum ~/.bashrc uw/dot-bashrc 
-	rsync --checksum ~/.bash_profile uw/dot-bash_profile 
-	rsync --checksum ~/.emacs uw/dot-emacs 
-	rsync --checksum ~/.gitignore uw/dot-gitignore
-	git commit -am "saving $(DATE)"
-	git push
-	git status
+	cd $(MF_DIR) &&	rsync --checksum ~/.bashrc uw/dot-bashrc 
+	cd $(MF_DIR) &&	rsync --checksum ~/.bash_profile uw/dot-bash_profile 
+	cd $(MF_DIR) &&	rsync --checksum ~/.emacs uw/dot-emacs 
+	cd $(MF_DIR) &&	rsync --checksum ~/.gitignore uw/dot-gitignore
+	cd $(MF_DIR) &&	git commit -am "saving $(DATE)"
+	cd $(MF_DIR) &&	git push
+	cd $(MF_DIR) &&	git status
 
 
 
