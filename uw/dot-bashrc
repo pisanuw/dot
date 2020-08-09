@@ -90,8 +90,9 @@ command_not_found_handle ()
 # adds /opt/rh/devtoolset-8/root/usr/bin: to PATH
 # If source does not work or is not an option use:
 # exec scl enable llvm-toolset-7.0 bash
-if [ hash "scl_source" 2>/dev/null ]; then
+if hash "scl_source" 2>/dev/null; then
     source scl_source enable llvm-toolset-7.0
 fi
+
 
 
