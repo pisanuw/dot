@@ -1,6 +1,131 @@
 
-;; really no .emacs file
+;; https://gitlab.com/shilling.jake/emacsd/-/blob/master/config.org
+(defconst my/init (eval-when-compile (expand-file-name "init.el" user-emacs-directory)))
+(defconst my/config (eval-when-compile (expand-file-name "config.org" user-emacs-directory)))
+(defconst my/custom (eval-when-compile (expand-file-name "custom.el" user-emacs-directory)))
+(defconst my/backups (eval-when-compile (expand-file-name "backups" user-emacs-directory)))
+;; (defconst my/agenda (eval-when-compile (expand-file-name "agenda" user-emacs-directory)))
+;; (defconst my/java-format-settings-file (eval-when-compile (expand-file-name "spring-eclipse-code-conventions.xml")))
 
+(setq user-full-name "Yusuf Pisan"
+      user-mail-address "pisan@uw.edu")
+
+
+;;; Encodings
+(prefer-coding-system 'utf-8-unix)
+(set-locale-environment "en_US.UTF-8")
+(set-default-coding-systems 'utf-8-unix)
+(set-selection-coding-system 'utf-8-unix)
+(set-buffer-file-coding-system 'utf-8-unix)
+(set-clipboard-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; By default, EMACS saves backup files in the same directory as the
+;; original. This creates a problem where I’m constantly adding these
+;; backup files to my .gitignore files. Instead, we want to save any
+;; backups into a sub directory of my my/backups folder. While we’re at
+;; it, we can also tell EMACS to not worry about deleting old backups and
+;; to add version numbers to the end of each backup file name.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq backup-by-copying t
+      backup-directory-alist `(("." . ,my/backups))
+      delete-old-versions t
+      kept-new-versions 10
+      kept-old-versions 1
+      version-control t)
+
+;; Also, store auto-saves in the same backup directory:
+(setq auto-save-file-name-transforms `((".*" ,(file-name-as-directory my/backups) t)))
+
+;; install if necessary
+(require 'package)
+(package-initialize)
+
+(defun install-require (pcks)
+  (interactive "p")
+  (dolist (pck pcks)
+    (unless (package-installed-p pck)
+      (package-install pck)))
+  (dolist (pck pcks)
+    (require pck)))
+
+(progn
+  (install-require '(smartparens))
+  (smartparens-global-mode t))
+
+;;; GUI
+(setq inhibit-startup-screen t)
+(setq visible-bell t)
+(setq show-trailing-whitespace t)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(show-paren-mode 1)
+(global-hl-line-mode -1)
+(column-number-mode t)
+(fset 'yes-or-no-p 'y-or-n-p)
+;; (display-time)
+
+(load-theme  'wombat)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; $PATH
+;; There are a few packages which depend on executables installed on
+;; the system. EMACS finds these executables by searching through
+;; directories in the exec-path variable. The exec-path-from-shell
+;; package makes sure this variable matches the $PATH variable from
+;; the user’s shell.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Initialize environment from the user’s shell.
+(progn
+  (install-require '(exec-path-from-shell))
+  (exec-path-from-shell-initialize))
+
+;; for Mac, change font using +/i 
+(when (eq system-type 'darwin)
+  (global-set-key (kbd "C-+") 'text-scale-increase)
+  (global-set-key (kbd "C--") 'text-scale-decrease)
+  (defun my/text-scale-reset ()
+    "Reset text-scale to 0."
+    (interactive)
+    (text-scale-set 0))
+  (global-set-key (kbd "C-0") 'my/text-scale-reset))
+
+;; helps you learn keys, pop-up options when you wait after C-x
+(progn
+  (install-require '(which-key))
+  (which-key-mode t)
+  (which-key-setup-side-window-right-bottom))
+
+(progn
+  (install-require '(hydra ivy))
+  (ivy-mode 1))
+
+;; mark lines, use C-c m c to act on all lines
+(progn
+  (install-require '(multiple-cursors))
+  (global-set-key (kbd "C-c m c") 'mc/edit-lines))
+
+;; Git wrapper - might be interesting
+;; (progn
+;;   (install-require '(magit))
+;;   (global-set-key (kbd "C-x g") 'magit-status))
+
+
+;; this requires more investigation
+(progn
+  (install-require '(lsp-mode))
+  (global-set-key (kbd "C-c m c") 'mc/edit-lines))
+
+(defconst my/clang (executable-find "clang"))
+(if my/clang
+    (defconst my/clang-resource-dir
+      (string-trim (shell-command-to-string (concat my/clang " -print-resource-dir"))))
+  (defconst my/clang-resource-dir nil))
+  
 ;; from Tim Menzies dotemacs file at https://github.com/timm/dot/blob/master/ncsu/vcl/dotemacs
 (progn
   (global-font-lock-mode t)
