@@ -3,6 +3,16 @@
 (setq user-full-name "Yusuf Pisan"
       user-mail-address "pisan@uw.edu")
 
+(defun emacs-get-latest-dot ()
+  (interactive)
+  (let ((m  (expand-file-name (concat (file-name-as-directory default-directory)
+                                      (file-name-as-directory "bitbucket")
+                                      (file-name-as-directory "pisanuw")
+                                      (file-name-as-directory "dot")
+                                      "Makefile"))))
+    (message (concat "make -f " m " install"))
+    (shell-command (concat "make -f " m " install"))))
+
 (defun emacs-updated-push-to-github ()
   (interactive)
   (let ((m  (expand-file-name (concat (file-name-as-directory default-directory)
