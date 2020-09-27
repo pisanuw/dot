@@ -75,7 +75,7 @@
 
 ;;; GUI
 (setq inhibit-startup-screen t)
-(setq visible-bell t)
+(setq visible-bell nil)
 (setq show-trailing-whitespace t)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -118,9 +118,9 @@
   (which-key-mode t)
   (which-key-setup-side-window-right-bottom))
 
-(progn
-  (package-install-require '(hydra ivy))
-  (ivy-mode 1))
+;; (progn
+;;   (package-install-require '(hydra ivy))
+;;   (ivy-mode 1))
 
 ;; mark lines, use C-c m c to act on all lines
 (progn
