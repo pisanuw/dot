@@ -70,6 +70,7 @@ pathadd /CSSDIV/classes/cssjolly
 pathadd $HOME/.cargo/bin
 pathadd $HOME/local/bin
 pathadd $HOME/.local/bin
+pathadd $HOME/bin
 
 
 alias get='git pull'
