@@ -73,6 +73,10 @@ pathadd $HOME/.local/bin
 pathadd $HOME/bin
 
 
+alias gcompile="echo \"g++ -std=c++11 -Wall -Wextra -Wno-sign-compare *.cpp\" ; g++ -std=c++11 -Wall -Wextra -Wno-sign-compare *.cpp"
+
+alias gexec="rm -f a.out; gcompile; [ -f ./a.out ] && echo \"./a.out\" && ./a.out"
+
 alias get='git pull'
 alias put='git commit -am `date +%y-%m-%d`; git push; git status'
 alias dot-install='pushd ~/bitbucket/pisanuw/dot; make install; popd'
